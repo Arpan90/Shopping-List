@@ -19,7 +19,7 @@ const ShoppingList = (props) => {
     }
 
     const { items } = props.item;
-    console.log("items: ", items)
+    console.log("items: ", items);
 
     // const [items, setItems] = useState([
     //     {id: uuid(), name: 'Eggs'},
@@ -36,6 +36,7 @@ const ShoppingList = (props) => {
                     { items.map(({_id, name}) => ( // underscore is prefixed to id because MongoDB supplies _id 
                         <CSSTransition key={_id} timeout={500} classNames='fade' > 
                             <ListGroupItem>
+                                { props.isAuthenticated ? 
                                 <Button
                                     className='remove-btn'
                                     color='danger'
@@ -50,7 +51,7 @@ const ShoppingList = (props) => {
                                      }}    
                                     >
                                         &times;
-                                </Button>
+                                </Button> : null }
                                 { name }
                             </ListGroupItem>
                         </CSSTransition>
@@ -63,11 +64,13 @@ const ShoppingList = (props) => {
 
 ShoppingList.propTypes = {
     getItems: PropTypes.func.isRequired,
-    item: PropTypes.object.isRequired
+    item: PropTypes.object.isRequired,
+    isAuthenticated: PropTypes.bool
 }
 
 const mapStateToProps = (state) => ({
-    item: state.item
+    item: state.item,
+    isAuthenticated: state.auth.isAuthenticated
 });
 
 export default connect( mapStateToProps, { getItems, deleteItem } )(ShoppingList);
